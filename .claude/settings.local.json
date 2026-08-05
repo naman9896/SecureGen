@@ -1,7 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Read(//Users/naman/Desktop/**)",
+      "Bash(flutter --version)",
+      "Bash(mkdir -p /Users/naman/Desktop/Flutter)",
+      "Bash(flutter create *)",
+      "Bash(flutter pub *)",
+      "Bash(dart run *)",
+      "Bash(flutter analyze *)",
+      "Bash(dart --version)",
+      "Bash(dart analyze *)",
+      "Bash(find /Users/naman/.pub-cache/hosted/pub.dev/riverpod-3.1.0 -name \"*.dart\" | xargs grep \"abstract.*class.*Notifier\" 2>/dev/null | head -10)",
+      "Bash(grep \"^class Notifier\\\\b\\\\|^abstract class Notifier\\\\b\" /Users/naman/.pub-cache/hosted/pub.dev/flutter_riverpod-3.1.0/lib/flutter_riverpod.dart 2>/dev/null | head -5 *)",
+      "Bash(grep \"displayName\\\\|String get name\\\\|String get email\" /Users/naman/.pub-cache/hosted/pub.dev/google_sign_in-7.2.0/lib/google_sign_in.dart 2>/dev/null | head -10)"
     ]
   }
 }

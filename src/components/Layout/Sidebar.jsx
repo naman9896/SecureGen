@@ -1,4 +1,6 @@
-import { KeyRound, Lock, Settings, ShieldCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { KeyRound, Lock, Settings, ShieldCheck, User } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
 
 const NAV = [
   { id: 'password', label: 'Password Generator', Icon: Lock },
@@ -7,6 +9,9 @@ const NAV = [
 ];
 
 export function Sidebar({ active, onNavigate }) {
+  const { user } = useAuth();
+  const nav = [...NAV, { id: 'account', label: user ? 'Account' : 'Sign In', Icon: User }];
+
   return (
     <aside className="hidden lg:flex flex-col w-56 shrink-0 bg-surface-lowest border-r border-outline-variant/40 min-h-screen sticky top-0">
       {/* Brand */}
@@ -20,17 +25,26 @@ export function Sidebar({ active, onNavigate }) {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {NAV.map(({ id, label, Icon }) => (
+        {nav.map(({ id, label, Icon }) => (
           <button
             key={id}
             onClick={() => onNavigate(id)}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 cursor-pointer
+            className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 cursor-pointer
               ${active === id
-                ? 'bg-primary-container/15 text-primary border-l-2 border-primary-container'
+                ? 'text-primary'
                 : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-high'}`}
           >
-            <Icon size={16} strokeWidth={1.75} />
-            {label}
+            {active === id && (
+              <motion.div
+                layoutId="sidebar-indicator"
+                className="absolute inset-0 rounded-lg bg-primary-container/15 border-l-2 border-primary-container"
+                transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+              />
+            )}
+            <span className="relative z-10 flex items-center gap-3">
+              <Icon size={16} strokeWidth={1.75} />
+              {label}
+            </span>
           </button>
         ))}
       </nav>

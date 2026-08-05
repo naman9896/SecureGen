@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import { RefreshCw, Copy, Download, ShieldCheck, Zap, Lock, SlidersHorizontal } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { RefreshCw, Copy, Download, ShieldCheck, Trash2, Zap, Lock, SlidersHorizontal } from 'lucide-react';
 import { useApiKeyGenerator } from '../../hooks/useApiKeyGenerator';
 import { useClipboard } from '../../hooks/useClipboard';
 import { Toast } from '../Common/Toast';
+import { UnlockPrompt } from '../Auth/UnlockPrompt';
 import { KeyCard } from './KeyCard';
 
 const FORMATS = ['alphanumeric', 'hex', 'base64'];
@@ -21,13 +23,24 @@ function downloadFile(content, filename, mimeType) {
 }
 
 export function ApiKeyGenerator() {
-  const { keys, opts, generate, updateOpt } = useApiKeyGenerator();
+  const { keys, opts, generate, updateOpt, clearKeys, locked } = useApiKeyGenerator();
   const { copied: copiedAll, copy: copyAll } = useClipboard();
-  const [generated, setGenerated] = useState(false);
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const downloadRef = useRef(null);
+
+  useEffect(() => {
+    if (!downloadOpen) return;
+    const handleClickOutside = e => {
+      if (downloadRef.current && !downloadRef.current.contains(e.target)) {
+        setDownloadOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [downloadOpen]);
 
   const handleGenerate = () => {
     generate();
-    setGenerated(true);
   };
 
   const recentKeys = keys.slice(0, opts.count);
@@ -38,6 +51,7 @@ export function ApiKeyGenerator() {
 
   const handleDownloadTxt = () => {
     downloadFile(keys.map(k => k.value).join('\n'), 'api-keys.txt', 'text/plain');
+    setDownloadOpen(false);
   };
 
   const handleDownloadCsv = () => {
@@ -46,6 +60,7 @@ export function ApiKeyGenerator() {
       ...keys.map(k => `${k.value},${k.format},${new Date(k.createdAt).toISOString()}`),
     ];
     downloadFile(rows.join('\n'), 'api-keys.csv', 'text/csv');
+    setDownloadOpen(false);
   };
 
   return (
@@ -167,24 +182,43 @@ export function ApiKeyGenerator() {
                 <button
                   onClick={handleCopyAll}
                   aria-label="Copy all"
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary-container transition-colors cursor-pointer"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary-container transition-colors cursor-pointer"
                 >
-                  <Copy size={13} />
+                  <Copy size={14} />
                 </button>
-                <div className="relative group">
+                <button
+                  onClick={clearKeys}
+                  aria-label="Clear all"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-error hover:border-error/50 transition-colors cursor-pointer"
+                >
+                  <Trash2 size={14} />
+                </button>
+                <div className="relative" ref={downloadRef}>
                   <button
-                    className="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary-container transition-colors cursor-pointer"
+                    onClick={() => setDownloadOpen(o => !o)}
+                    aria-label="Download"
+                    className="w-9 h-9 flex items-center justify-center rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary-container transition-colors cursor-pointer"
                   >
-                    <Download size={13} />
+                    <Download size={14} />
                   </button>
-                  <div className="absolute right-0 top-9 hidden group-hover:flex flex-col z-20 bg-surface-high border border-outline-variant/50 rounded-lg overflow-hidden shadow-xl min-w-[120px]">
-                    <button onClick={handleDownloadTxt} className="px-4 py-2 text-xs text-on-surface-variant hover:bg-surface-highest hover:text-on-surface text-left cursor-pointer transition-colors">
-                      Download TXT
-                    </button>
-                    <button onClick={handleDownloadCsv} className="px-4 py-2 text-xs text-on-surface-variant hover:bg-surface-highest hover:text-on-surface text-left cursor-pointer transition-colors">
-                      Download CSV
-                    </button>
-                  </div>
+                  <AnimatePresence>
+                    {downloadOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.96, y: -4 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.96, y: -4 }}
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        className="absolute right-0 top-11 flex flex-col z-20 bg-surface-high border border-outline-variant/50 rounded-lg overflow-hidden shadow-xl min-w-[120px]"
+                      >
+                        <button onClick={handleDownloadTxt} className="px-4 py-2 text-xs text-on-surface-variant hover:bg-surface-highest hover:text-on-surface text-left cursor-pointer transition-colors">
+                          Download TXT
+                        </button>
+                        <button onClick={handleDownloadCsv} className="px-4 py-2 text-xs text-on-surface-variant hover:bg-surface-highest hover:text-on-surface text-left cursor-pointer transition-colors">
+                          Download CSV
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             )}
@@ -192,23 +226,35 @@ export function ApiKeyGenerator() {
 
           {/* Key list */}
           <div className="space-y-2 max-h-80 overflow-y-auto">
-            {keys.length === 0 ? (
+            {locked ? (
+              <UnlockPrompt />
+            ) : keys.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <Lock size={28} className="text-outline mb-3" />
                 <p className="text-sm text-on-surface-variant">No keys generated yet</p>
                 <p className="text-xs text-outline mt-1">Configure settings and click generate</p>
               </div>
             ) : (
-              keys.slice(0, 10).map((item, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  {i < 3 && (
-                    <span className="label-caps text-[9px] px-1.5 py-0.5 rounded bg-secondary/15 text-secondary shrink-0">
-                      Active
-                    </span>
-                  )}
-                  <KeyCard item={item} />
-                </div>
-              ))
+              <AnimatePresence initial={false}>
+                {keys.slice(0, 10).map((item, i) => (
+                  <motion.div
+                    key={item.id ?? item.value}
+                    layout
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-center gap-2"
+                  >
+                    {i < 3 && (
+                      <span className="label-caps text-[9px] px-1.5 py-0.5 rounded bg-secondary/15 text-secondary shrink-0">
+                        Active
+                      </span>
+                    )}
+                    <KeyCard item={item} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             )}
           </div>
 

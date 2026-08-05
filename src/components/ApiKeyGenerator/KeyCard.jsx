@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Copy, QrCode } from 'lucide-react';
 import { useClipboard } from '../../hooks/useClipboard';
 import { Toast } from '../Common/Toast';
@@ -25,20 +26,22 @@ export function KeyCard({ item }) {
           <button
             onClick={() => setQr(true)}
             aria-label="Show QR"
-            className="w-7 h-7 flex items-center justify-center rounded text-outline hover:text-primary opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center rounded text-outline hover:text-primary opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all cursor-pointer"
           >
-            <QrCode size={13} />
+            <QrCode size={14} />
           </button>
           <button
             onClick={() => copy(item.value)}
             aria-label="Copy"
-            className="w-7 h-7 flex items-center justify-center rounded text-outline hover:text-primary opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center rounded text-outline hover:text-primary opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all cursor-pointer"
           >
-            <Copy size={13} />
+            <Copy size={14} />
           </button>
         </div>
       </div>
-      {qr && <QRModal value={item.value} onClose={() => setQr(false)} />}
+      <AnimatePresence>
+        {qr && <QRModal key="qr" value={item.value} onClose={() => setQr(false)} />}
+      </AnimatePresence>
       <Toast message="API key copied!" visible={copied} />
     </>
   );

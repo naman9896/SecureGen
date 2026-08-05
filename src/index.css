@@ -1,30 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-surface: #10131b;
-  --color-surface-dim: #10131b;
-  --color-surface-bright: #363942;
-  --color-surface-lowest: #0b0e16;
-  --color-surface-low: #181c23;
-  --color-surface-base: #1c2028;
-  --color-surface-high: #272a32;
-  --color-surface-highest: #31353d;
-  --color-on-surface: #e0e2ed;
-  --color-on-surface-variant: #c1c6d7;
-  --color-outline: #8b90a0;
-  --color-outline-variant: #414755;
-  --color-primary: #adc6ff;
-  --color-primary-container: #4b8eff;
-  --color-on-primary: #002e69;
-  --color-secondary: #4edea3;
-  --color-secondary-container: #00a572;
-  --color-tertiary: #ffb95f;
-  --color-error: #ffb4ab;
-  --color-background: #10131b;
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-lowest: var(--surface-lowest);
+  --color-surface-low: var(--surface-low);
+  --color-surface-base: var(--surface-base);
+  --color-surface-high: var(--surface-high);
+  --color-surface-highest: var(--surface-highest);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-tertiary: var(--tertiary);
+  --color-error: var(--error);
+  --color-error-container: var(--error-container);
+  --color-background: var(--background);
 
   --font-family-sans: 'Inter', sans-serif;
-  --font-family-mono: 'Space Grotesk', monospace;
+  --font-family-mono: 'JetBrains Mono', monospace;
 
   --radius-sm: 0.125rem;
   --radius-DEFAULT: 0.25rem;
@@ -34,19 +35,70 @@
   --radius-full: 9999px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --surface: #f8fafc;
+  --surface-dim: #e2e8f0;
+  --surface-bright: #ffffff;
+  --surface-lowest: #ffffff;
+  --surface-low: #f8fafc;
+  --surface-base: #ffffff;
+  --surface-high: #eef2f7;
+  --surface-highest: #e2e8f0;
+  --on-surface: #0f172a;
+  --on-surface-variant: #475569;
+  --outline: #64748b;
+  --outline-variant: #e2e8f0;
+  --primary: #1e40af;
+  --primary-container: #3b82f6;
+  --on-primary: #ffffff;
+  --secondary: #047857;
+  --secondary-container: #059669;
+  --tertiary: #b45309;
+  --error: #dc2626;
+  --error-container: #fee2e2;
+  --background: #f8fafc;
+}
+
+.dark {
+  --surface: #10131b;
+  --surface-dim: #10131b;
+  --surface-bright: #363942;
+  --surface-lowest: #0b0e16;
+  --surface-low: #181c23;
+  --surface-base: #1c2028;
+  --surface-high: #272a32;
+  --surface-highest: #31353d;
+  --on-surface: #e0e2ed;
+  --on-surface-variant: #c1c6d7;
+  --outline: #8b90a0;
+  --outline-variant: #414755;
+  --primary: #adc6ff;
+  --primary-container: #4b8eff;
+  --on-primary: #002e69;
+  --secondary: #4edea3;
+  --secondary-container: #00a572;
+  --tertiary: #ffb95f;
+  --error: #ffb4ab;
+  --error-container: #93000a;
+  --background: #10131b;
+}
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+}
 
 html { font-family: 'Inter', sans-serif; }
 
 body {
-  background-color: #10131b;
-  color: #e0e2ed;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
   min-height: 100vh;
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 .font-mono-display {
-  font-family: 'Space Grotesk', monospace;
-  letter-spacing: 0.05em;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.03em;
 }
 
 .label-caps {
@@ -54,14 +106,14 @@ body {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #8b90a0;
+  color: var(--color-outline);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #10131b; }
-::-webkit-scrollbar-thumb { background: #414755; border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: #8b90a0; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-outline-variant); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
 
 /* Range input */
 input[type='range'] {
@@ -72,7 +124,7 @@ input[type='range'] {
   width: 100%;
 }
 input[type='range']::-webkit-slider-runnable-track {
-  background: #414755;
+  background: var(--color-outline-variant);
   height: 4px;
   border-radius: 9999px;
 }
@@ -80,21 +132,21 @@ input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   margin-top: -6px;
-  background-color: #adc6ff;
+  background-color: var(--color-primary);
   height: 16px;
   width: 16px;
   border-radius: 9999px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.5);
   transition: background-color 150ms ease;
 }
-input[type='range']::-webkit-slider-thumb:hover { background-color: #4b8eff; }
+input[type='range']::-webkit-slider-thumb:hover { background-color: var(--color-primary-container); }
 input[type='range']::-moz-range-track {
-  background: #414755;
+  background: var(--color-outline-variant);
   height: 4px;
   border-radius: 9999px;
 }
 input[type='range']::-moz-range-thumb {
-  background-color: #adc6ff;
+  background-color: var(--color-primary);
   height: 16px;
   width: 16px;
   border-radius: 9999px;
@@ -103,14 +155,6 @@ input[type='range']::-moz-range-thumb {
 }
 
 /* Animations */
-@keyframes slide-up {
-  from { transform: translateY(12px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-@keyframes fade-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%       { transform: translateX(-4px); }
@@ -118,5 +162,4 @@ input[type='range']::-moz-range-thumb {
   60%       { transform: translateX(-4px); }
   80%       { transform: translateX(2px); }
 }
-.animate-slide-up { animation: slide-up 220ms ease forwards; }
-.animate-shake    { animation: shake 300ms ease; }
+.animate-shake { animation: shake 300ms ease; }

@@ -6,7 +6,7 @@ import { PasswordHistory } from './PasswordHistory';
 import { Checkbox } from '../Common/Checkbox';
 
 export function PasswordGenerator() {
-  const { password, opts, strength, generate, updateOpt, history, clearHistory } = usePasswordGenerator();
+  const { password, opts, strength, generate, updateOpt, history, clearHistory, locked } = usePasswordGenerator();
 
   return (
     <div className="space-y-6 pb-24 lg:pb-8">
@@ -97,7 +97,7 @@ export function PasswordGenerator() {
       </div>
 
       {/* History */}
-      <PasswordHistory history={history} onClear={clearHistory} />
+      <PasswordHistory history={history} onClear={clearHistory} locked={locked} />
     </div>
   );
 }
