@@ -9,11 +9,12 @@
     <title>SecureGen — Secure Password & API Key Generator</title>
     <meta
       name="description"
-      content="Generate cryptographically strong passwords and API keys entirely in your browser. Powered by the Web Crypto API — nothing you create is ever sent to a server, stored, or logged."
+      content="Free online generator for cryptographically strong passwords and API keys. Everything runs in your browser with the Web Crypto API — nothing you create is ever sent to a server, stored, or logged."
     />
     <meta name="keywords" content="password generator, API key generator, secure password generator, random password generator, strong password generator, CSPRNG, Web Crypto API, client-side password generator" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="author" content="SecureGen" />
+    <meta name="application-name" content="SecureGen" />
     <link rel="canonical" href="https://secure-gen-swart.vercel.app/" />
 
     <!-- Open Graph -->
@@ -23,11 +24,12 @@
     <meta property="og:title" content="SecureGen — Secure Password & API Key Generator" />
     <meta
       property="og:description"
-      content="Generate cryptographically strong passwords and API keys entirely in your browser. Nothing you create ever leaves your device."
+      content="Free online generator for cryptographically strong passwords and API keys. Nothing you create ever leaves your device."
     />
     <meta property="og:image" content="https://secure-gen-swart.vercel.app/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SecureGen — secure password and API key generator" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
@@ -35,29 +37,114 @@
     <meta name="twitter:title" content="SecureGen — Secure Password & API Key Generator" />
     <meta
       name="twitter:description"
-      content="Generate cryptographically strong passwords and API keys entirely in your browser. Nothing you create ever leaves your device."
+      content="Free online generator for cryptographically strong passwords and API keys. Nothing you create ever leaves your device."
     />
     <meta name="twitter:image" content="https://secure-gen-swart.vercel.app/og-image.png" />
+    <meta name="twitter:image:alt" content="SecureGen — secure password and API key generator" />
 
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "SecureGen",
-        "url": "https://secure-gen-swart.vercel.app/",
-        "description": "Generate cryptographically strong passwords and API keys entirely in your browser using the Web Crypto API. Nothing you create is ever sent to a server.",
-        "applicationCategory": "SecurityApplication",
-        "operatingSystem": "Any",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
+      [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "SecureGen",
+          "url": "https://secure-gen-swart.vercel.app/",
+          "description": "Generate cryptographically strong passwords and API keys entirely in your browser using the Web Crypto API. Nothing you create is ever sent to a server.",
+          "applicationCategory": "SecurityApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript and a browser with the Web Crypto API",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Cryptographically secure password generation (CSPRNG)",
+            "Adjustable length from 8 to 128 characters",
+            "Toggle uppercase, lowercase, numbers and symbols",
+            "Exclude ambiguous characters",
+            "Real-time password strength and entropy meter",
+            "API key generation in alphanumeric, hexadecimal and Base64",
+            "Custom key prefixes and batch generation up to 100 keys",
+            "Export keys as TXT or CSV and view as QR codes",
+            "100% client-side — no servers, no logging, no tracking"
+          ],
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "SecureGen",
+          "url": "https://secure-gen-swart.vercel.app/"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is SecureGen free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. SecureGen is completely free, with no account required and no limits on how many passwords or API keys you generate."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are my generated passwords stored or sent anywhere?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Every password and API key is generated locally in your browser. SecureGen makes no network requests during generation and stores nothing except your theme preference."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How random are the passwords?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SecureGen uses the browser's Web Crypto API (crypto.getRandomValues), a cryptographically secure random number generator, with rejection sampling to avoid modulo bias. Math.random() is never used."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I generate API keys as well as passwords?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. SecureGen generates API keys in alphanumeric, hexadecimal or Base64 formats, supports custom prefixes such as sk-, batch generation of up to 100 keys, and export as TXT or CSV."
+              }
+            }
+          ]
         }
-      }
+      ]
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static fallback shown to crawlers and non-JS clients; replaced by the app on load. -->
+      <main style="max-width:640px;margin:0 auto;padding:48px 20px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#e7e9ee;background:#10131b;min-height:100vh">
+        <h1 style="font-size:1.6rem;margin:0 0 12px">SecureGen — Secure Password &amp; API Key Generator</h1>
+        <p style="line-height:1.6;color:#aab1c0;margin:0 0 20px">
+          SecureGen is a free, privacy-first tool that generates cryptographically strong
+          passwords and API keys entirely in your browser using the Web Crypto API. There is
+          no backend: nothing you create is ever sent to a server, stored, or logged.
+        </p>
+        <h2 style="font-size:1.1rem;margin:24px 0 8px">Password generator</h2>
+        <p style="line-height:1.6;color:#aab1c0;margin:0 0 16px">
+          Adjustable length from 8 to 128 characters, toggles for uppercase, lowercase,
+          numbers and symbols, an option to exclude ambiguous characters, and a real-time
+          strength meter with entropy in bits.
+        </p>
+        <h2 style="font-size:1.1rem;margin:24px 0 8px">API key generator</h2>
+        <p style="line-height:1.6;color:#aab1c0;margin:0 0 16px">
+          Output as alphanumeric, hexadecimal or Base64, add a custom prefix such as
+          <code>sk-</code>, generate up to 100 keys at once, and export as TXT or CSV or
+          view any key as a QR code.
+        </p>
+        <p style="line-height:1.6;color:#aab1c0;margin:24px 0 0">
+          Loading the generator… If it does not appear, enable JavaScript in your browser.
+        </p>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
